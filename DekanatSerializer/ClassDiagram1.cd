@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="Business.BusinessClass">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="Business.BusinessClass.For">
+        <TypeIdentifier />
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="DekanatSerializer.DialogSelectGroupe">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAECAAAAAAAACAAAQCAAwAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Dialogs\Students\DialogSelectGroupe.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DekanatSerializer.DialogSelectHostel">
+    <Position X="2.25" Y="4" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAECAAAAAAAACAAAQCAAwAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Dialogs\Hostels\DialogSelectHostel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DekanatSerializer.DialogSelectRoom">
+    <Position X="12.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAECAAAAAAAACAAAQCAAwAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Dialogs\Students\DialogSelectRoom.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DekanatSerializer.PresentationLayerClass">
+    <Position X="11" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgIACgABAEAIAIAAAAEAAAAAAEAAAAAACCABAAEAAA=</HashCode>
+      <FileName>PresentationLayerClass.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DekanatSerializer.TabGropes">
+    <Position X="7.5" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>BGQAEAAAECAAAJAgQEKAAABCIAgghAAAEAQAAQABAAA=</HashCode>
+      <FileName>UserControls\TabGropes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DekanatSerializer.TabHostels">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>BEQAEAAAESAAAJAgQEKAAAACAAgglAAAAAQAIQgBAAA=</HashCode>
+      <FileName>UserControls\TabHostels.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DekanatSerializer.TabRoomes">
+    <Position X="9.25" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>BFUAEAAAESEAAJUgQEKAAAACAAgglAAAAAQAAQEBAAA=</HashCode>
+      <FileName>UserControls\TabRoomes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DekanatSerializer.TabStudents">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>92QAEAAAFCGJAJEwQEKEQAJDICgsBAJAEARAAQRBBCE=</HashCode>
+      <FileName>UserControls\TabStudents.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
