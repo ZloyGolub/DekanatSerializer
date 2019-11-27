@@ -12,8 +12,13 @@ using System.IO;
 
 namespace DekanatSerializer
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public partial class TabStudents : UserControl
     {
+
+        /// <summary>Initializes a new instance of the <see cref="TabStudents"/> class.</summary>
         public TabStudents()
         {
             InitializeComponent();
@@ -25,10 +30,19 @@ namespace DekanatSerializer
                 ButtonSelectGroupe, ButtonErace,ButtonEdit, ButtonSelectRoom,ButtonClear, ButtonOpen, ButtonSave }, false);
         }
 
+        /// <summary>Gets the name of the table.</summary>
+        /// <value>The name of the table.</value>
         public BusinessClass.For TableName { get; private set; } = BusinessClass.For.Student;
+        /// <summary>Gets a value indicating whether [flag selected row].</summary>
+        /// <value>
+        ///   <c>true</c> if [flag selected row]; otherwise, <c>false</c>.</value>
         public bool FlagSelectedRow { get; private set; } = false;
+        /// <summary>Gets the file path.</summary>
+        /// <value>The file path.</value>
         public string FilePath { get; private set; }
-        
+
+        /// <summary>Updates the data.</summary>
+        /// <param name="for">For.</param>
         private void UpdateData(BusinessClass.For @for)
         {
             dataGridView1.DataSource = BusinessClass.DataOutPut(@for);
@@ -37,6 +51,9 @@ namespace DekanatSerializer
             PresentationLayerClass.AddItemsToComboBox(comboBox3, BusinessClass.For.Room);            
         }
 
+        /// <summary>Handles the Click event of the ButtonSave control.</summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void ButtonSave_Click(object sender, EventArgs e)
         {
             if (FlagSelectedRow)
@@ -85,6 +102,9 @@ namespace DekanatSerializer
             }
         }
 
+        /// <summary>Handles the Click event of the ButtonOpen control.</summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void ButtonOpen_Click(object sender, EventArgs e)
         {
             if (openFileDialog1.ShowDialog() == DialogResult.Cancel)

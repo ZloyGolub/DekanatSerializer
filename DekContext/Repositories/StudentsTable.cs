@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace DekContext
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class StudentsTable
     {
         public int ID { get; set; }

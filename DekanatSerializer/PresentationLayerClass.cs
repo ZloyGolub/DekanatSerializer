@@ -11,8 +11,15 @@ using System.Windows.Forms;
 
 namespace DekanatSerializer
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public partial class PresentationLayerClass
     {
+        /// <summary>Called when [read switch].</summary>
+        /// <param name="parent">The parent.</param>
+        /// <param name="ExceptThisTextTabTextBoxes">The except this text tab text boxes.</param>
+        /// <param name="SwitchTo">if set to <c>true</c> [switch to].</param>
         public static void OnlyReadSwitch(Control parent, int ExceptThisTextTabTextBoxes, bool SwitchTo)
         {
             foreach (Control c in parent.Controls)
@@ -27,11 +34,17 @@ namespace DekanatSerializer
             }
         }
 
+        /// <summary>Enables the disable buttons.</summary>
+        /// <param name="MassButtons">The mass buttons.</param>
+        /// <param name="Enabled">if set to <c>true</c> [enabled].</param>
         public static void EnableDisableButtons(Button[] MassButtons , bool Enabled)
         {
             foreach (var item in MassButtons) item.Enabled = Enabled;
         }
 
+        /// <summary>Checks the specified parent.</summary>
+        /// <param name="parent">The parent.</param>
+        /// <returns></returns>
         public static bool Check(Control parent)
         {
             foreach (Control c in parent.Controls)
@@ -47,6 +60,8 @@ namespace DekanatSerializer
             return true;
         }
 
+        /// <summary>Clears the controls.</summary>
+        /// <param name="parent">The parent.</param>
         public static void ClearControls(Control parent)
         {
             foreach (Control c in parent.Controls)
@@ -60,6 +75,8 @@ namespace DekanatSerializer
             }
         }
 
+        /// <summary>Clears the filtres.</summary>
+        /// <param name="parent">The parent.</param>
         public static void ClearFiltres(Control parent)
         {
             foreach (Control c in parent.Controls)
@@ -79,6 +96,8 @@ namespace DekanatSerializer
             }
         }
 
+        /// <summary>Sends the data from hostel text box.</summary>
+        /// <param name="parent">The parent.</param>
         public static void SendDataFromHostelTextBox(Control parent)
         {
             int i = 0;
@@ -102,6 +121,9 @@ namespace DekanatSerializer
             BusinessClass.DataInForHostel(mass);
         }
 
+        /// <summary>Sends the data from hostel text box.</summary>
+        /// <param name="parent">The parent.</param>
+        /// <param name="RowIndex">Index of the row.</param>
         public static void SendDataFromHostelTextBox(Control parent, int RowIndex)
         {
             int i = 0;
@@ -127,6 +149,8 @@ namespace DekanatSerializer
             BusinessClass.DataInForHostel(mass, RowIndex);
         }
 
+        /// <summary>Sends the data from room text box.</summary>
+        /// <param name="parent">The parent.</param>
         public static void SendDataFromRoomTextBox(Control parent)
         {
             int i = 0;
@@ -150,6 +174,9 @@ namespace DekanatSerializer
             BusinessClass.DataInForRoom(mass);
         }
 
+        /// <summary>Sends the data from room text box.</summary>
+        /// <param name="parent">The parent.</param>
+        /// <param name="RowIndex">Index of the row.</param>
         public static void SendDataFromRoomTextBox(Control parent, int RowIndex)
         {
             int i = 0;
@@ -175,6 +202,8 @@ namespace DekanatSerializer
             BusinessClass.DataInForRoom(mass, RowIndex);
         }
 
+        /// <summary>Sends the data from groupe text box.</summary>
+        /// <param name="parent">The parent.</param>
         public static void SendDataFromGroupeTextBox(Control parent)
         {
             int i = 0;
@@ -198,6 +227,9 @@ namespace DekanatSerializer
             BusinessClass.DataInForGroupes(mass);
         }
 
+        /// <summary>Sends the data from groupe text box.</summary>
+        /// <param name="parent">The parent.</param>
+        /// <param name="RowIndex">Index of the row.</param>
         public static void SendDataFromGroupeTextBox(Control parent, int RowIndex)
         {
             int i = 0;
@@ -223,6 +255,9 @@ namespace DekanatSerializer
             BusinessClass.DataInForGroupes(mass, RowIndex);
         }
 
+        /// <summary>Sends the data from student text box.</summary>
+        /// <param name="parent">The parent.</param>
+        /// <param name="filePath">The file path.</param>
         public static void SendDataFromStudentTextBox(Control parent, string filePath)
         {            
             int i = 0;
@@ -251,6 +286,10 @@ namespace DekanatSerializer
             BusinessClass.DataInForStudent(mass);
         }
 
+        /// <summary>Sends the data from student text box.</summary>
+        /// <param name="parent">The parent.</param>
+        /// <param name="filePath">The file path.</param>
+        /// <param name="RowIndex">Index of the row.</param>
         public static void SendDataFromStudentTextBox(Control parent, string filePath, int RowIndex)
         {
             int i = 0;
@@ -277,6 +316,10 @@ namespace DekanatSerializer
             BusinessClass.DataInForStudent(mass, RowIndex);
         }
 
+        /// <summary>Adds the data to text box.</summary>
+        /// <param name="parent">The parent.</param>
+        /// <param name="for">For.</param>
+        /// <param name="RowIndex">Index of the row.</param>
         public static void AddDataToTextBox(Control parent, BusinessClass.For @for, int RowIndex)
         {
             //int i = 0;
@@ -297,6 +340,8 @@ namespace DekanatSerializer
             }
             
         }
+        /// <summary>Nons the sortable grid.</summary>
+        /// <param name="parent">The parent.</param>
         public static void NonSortableGrid(DataGridView parent)
         {
             int i;
@@ -312,6 +357,9 @@ namespace DekanatSerializer
 
         }
 
+        /// <summary>Gets the set picture.</summary>
+        /// <param name="parent">The parent.</param>
+        /// <param name="RowIndex">Index of the row.</param>
         public static void GetSetPicture(PictureBox parent, int RowIndex)
         {
             MemoryStream ms;
@@ -324,33 +372,50 @@ namespace DekanatSerializer
             else parent.Image = null;
         }
 
+        /// <summary>Gets the set picture.</summary>
+        /// <param name="parent">The parent.</param>
         public static void GetSetPicture(PictureBox parent)
         {
             parent.Image = null;
         }
 
+        /// <summary>Clears the before create.</summary>
+        /// <param name="panel">The panel.</param>
         public static void ClearBeforeCreate(Panel panel)
         {
             ClearControls(panel);
         }
 
+        /// <summary>Clears the before create.</summary>
+        /// <param name="panel">The panel.</param>
+        /// <param name="pictureBox">The picture box.</param>
         public static void ClearBeforeCreate(Panel panel, PictureBox pictureBox)
         {
             ClearControls(panel);
             GetSetPicture(pictureBox);
         }
+        /// <summary>Clears the before create.</summary>
+        /// <param name="panel">The panel.</param>
+        /// <param name="parent">The parent.</param>
         public static void ClearBeforeCreate(Panel panel, DataGridView parent)
         {
             parent.ClearSelection();
             ClearControls(panel);
         }
+        /// <summary>Clears the before create.</summary>
+        /// <param name="panel">The panel.</param>
+        /// <param name="pictureBox">The picture box.</param>
+        /// <param name="parent">The parent.</param>
         public static void ClearBeforeCreate(Panel panel, PictureBox pictureBox, DataGridView parent)
         {
             parent.ClearSelection();
             ClearControls(panel);
             GetSetPicture(pictureBox);
         }
-        
+
+        /// <summary>Adds the items to ComboBox.</summary>
+        /// <param name="parent">The parent.</param>
+        /// <param name="for">For.</param>
         public static void AddItemsToComboBox(ComboBox parent, BusinessClass.For @for)
         {
             //List<ComboboxItem> Ilist = new List<ComboboxItem>();

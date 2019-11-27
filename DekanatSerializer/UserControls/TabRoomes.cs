@@ -11,9 +11,12 @@ using Business;
 
 namespace DekanatSerializer
 {
+    /// <summary></summary>
+    /// <seealso cref="System.Windows.Forms.UserControl" />
     public partial class TabRoomes : UserControl
     {
         //возможно стоит сделать декомпозицию и добавить отдельно корпуса общежитий
+        /// <summary>Initializes a new instance of the <see cref="TabRoomes"/> class.</summary>
         public TabRoomes()
         {
             InitializeComponent();
@@ -24,14 +27,24 @@ namespace DekanatSerializer
                 ButtonSelectHostel, ButtonClear, ButtonSave }, false);
         }
 
+        /// <summary>Gets the name of the table.</summary>
+        /// <value>The name of the table.</value>
         public BusinessClass.For TableName { get; private set; } = BusinessClass.For.Room;
+        /// <summary>Gets a value indicating whether [flag selected row].</summary>
+        /// <value>
+        ///   <c>true</c> if [flag selected row]; otherwise, <c>false</c>.</value>
         public bool FlagSelectedRow { get; private set; } = false;
 
+        /// <summary>Updates the data.</summary>
+        /// <param name="for">For.</param>
         private void UpdateData(BusinessClass.For @for)
         {
             dataGridView1.DataSource = BusinessClass.DataOutPut(@for);            
         }
 
+        /// <summary>Handles the Click event of the ButtonSave control.</summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void ButtonSave_Click(object sender, EventArgs e)
         {
             if (FlagSelectedRow)
@@ -75,6 +88,9 @@ namespace DekanatSerializer
             }
         }
 
+        /// <summary>Handles the Click event of the ButtonCreate control.</summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void ButtonCreate_Click(object sender, EventArgs e)
         {
             PresentationLayerClass.EnableDisableButtons(new Button[] {
@@ -90,18 +106,27 @@ namespace DekanatSerializer
             ButtonSelectHostel.Focus();
         }
 
+        /// <summary>Handles the Click event of the ButtonClear control.</summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void ButtonClear_Click(object sender, EventArgs e)
         {
             PresentationLayerClass.ClearControls(panel1);
             ButtonSelectHostel.Focus();
         }
 
+        /// <summary>Handles the SelectionChanged event of the dataGridView1 control.</summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
         {
             PresentationLayerClass.AddDataToTextBox(panel1, TableName, Convert.ToInt32(dataGridView1[0, dataGridView1.CurrentRow.Index].Value.ToString()));
             FlagSelectedRow = false;
         }
 
+        /// <summary>Handles the Click event of the ButtonDelete control.</summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void ButtonDelete_Click(object sender, EventArgs e)
         {
             try
@@ -128,6 +153,9 @@ namespace DekanatSerializer
             }
         }
 
+        /// <summary>Handles the Click event of the ButtonSelectHostel control.</summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void ButtonSelectHostel_Click(object sender, EventArgs e)
         {
             DialogSelectHostel DSH = new DialogSelectHostel();
@@ -143,6 +171,9 @@ namespace DekanatSerializer
             }
         }
 
+        /// <summary>Handles the Click event of the ButtonCancelEdit control.</summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void ButtonCancelEdit_Click(object sender, EventArgs e)
         {
             PresentationLayerClass.ClearBeforeCreate(panel1);
@@ -163,6 +194,9 @@ namespace DekanatSerializer
             TextBoxFreePlace.ReadOnly = true;
         }
 
+        /// <summary>Handles the Click event of the ButtonEdit control.</summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void ButtonEdit_Click(object sender, EventArgs e)
         {
             if (!FlagSelectedRow)
