@@ -7,12 +7,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace DataAccess
+namespace DekContext
 {
     public class DataLoadSave
     {
         public static void SaveXML(string FilePath, object Blok)
-        {
+        {           
             XmlSerializer formatter = new XmlSerializer(typeof(Dek));
             using (FileStream fs = new FileStream(FilePath, FileMode.Create))
             {
@@ -20,13 +20,20 @@ namespace DataAccess
             }
         }
 
-        public static Dek LoadXML(string FilePath)
+        public static Dek LoadXML(string FilePath = @"DB.xml")
         {
-            XmlSerializer formatter = new XmlSerializer(typeof(Dek));
-            using (FileStream fs = new FileStream(FilePath, FileMode.OpenOrCreate))
+            if (File.Exists(FilePath))
             {
-                return ((Dek)formatter.Deserialize(fs));
-            }            
+                XmlSerializer formatter = new XmlSerializer(typeof(Dek));
+                using (FileStream fs = new FileStream(FilePath, FileMode.OpenOrCreate))
+                {                    
+                    return (Dek)formatter.Deserialize(fs);
+                }
+            }
+            else
+            {
+                return new Dek();
+            }
         }
     }
 }

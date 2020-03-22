@@ -31,10 +31,6 @@ namespace DekanatSerializer
             flowLayoutPanel1.Controls.Add(TabStudentControl = new TabStudents());
         }
     
-        private void PictureBoxExit_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
 
         private void ButtonStudents_Click(object sender, EventArgs e)
         {
@@ -103,9 +99,6 @@ namespace DekanatSerializer
             }
         }
 
-        private void pictureBoxMini_Click(object sender, EventArgs e)
-        {
-            WindowState = FormWindowState.Minimized;
-        }
+
     }
 }

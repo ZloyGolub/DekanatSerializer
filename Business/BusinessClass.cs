@@ -1,5 +1,4 @@
-﻿using DataAccess;
-using DekContext;
+﻿using DekContext;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -15,11 +14,6 @@ namespace Business
         public enum For { Student, Groupe, Room, Hostel }
 
         private static readonly string FilePath = @"DB.xml";
-
-        public static object Load(object Blok)
-        {
-            return DataLoadSave.LoadXML(FilePath);             
-        }
 
         public static void Save(object Blok)
         {
@@ -92,7 +86,7 @@ namespace Business
             RT.Columns.Add("Опис", Type.GetType("System.String"));
             return RT;
         }
-        
+
         public static DataTable InitealDTSHostel()
         {
             DataTable HT = new DataTable("Hostels");
@@ -116,7 +110,7 @@ namespace Business
                 DataTable GroupeT = InitealDTSGrope();
                 DataTable RoomT = InitealDTRoom();
                 DataTable HostelT = InitealDTSHostel();
-                
+
                 Ds.Tables.Add(StudentT);
                 Ds.Tables.Add(GroupeT);
                 Ds.Tables.Add(RoomT);
@@ -134,13 +128,13 @@ namespace Business
                     case For.Groupe:
                         foreach (GroupeTable G in TB.Groupes)
                         {
-                            GroupeT.Rows.Add(new object[] {G.ID, G.GroupeNumber, G.StudentsInGroupe, G.Description });
+                            GroupeT.Rows.Add(new object[] { G.ID, G.GroupeNumber, G.StudentsInGroupe, G.Description });
                         }
                         return GroupeT;
                     case For.Room:
                         foreach (RoomTable R in TB.Roomes)
                         {
-                            RoomT.Rows.Add(new object[] {R.ID,GetHostelNameByID(TB,R.HostelID), R.RoomNumber, R.AllPlace, R.FreePlase, R.Description });
+                            RoomT.Rows.Add(new object[] { R.ID, GetHostelNameByID(TB, R.HostelID), R.RoomNumber, R.AllPlace, R.FreePlase, R.Description });
                         }
                         return RoomT;
                     case For.Hostel:
@@ -218,17 +212,17 @@ namespace Business
             return null;
         }
 
-        public static MemoryStream ReturnPicture(int ID)
+        public static string ReturnPicture(int ID)
         {
-            MemoryStream ms;
             Dek TB = DataLoadSave.LoadXML(FilePath);
-            int i = GetTrueItemID(TB, ID, For.Student);
-            if ((i!=-1)&&(TB.Students[i].Bin != null))
+
+            var student = TB.Students.First(x => x.ID == ID);
+
+            if (student.ImagePath != "")
             {
-                ms = new MemoryStream(TB.Students[i].Bin);
-                return ms;
+                return student.ImagePath;
             }
-            else return ms = null;
+            return null;
         }
 
         //внесение даных в таблици
@@ -247,7 +241,7 @@ namespace Business
                     }
                     break;
                 case For.Groupe:
-                     for (int i = 0; i < TableBlok.Groupes.Count; i++)
+                    for (int i = 0; i < TableBlok.Groupes.Count; i++)
                     {
                         if (TableBlok.Groupes[i].ID == ID)
                         {
@@ -256,7 +250,7 @@ namespace Business
                     }
                     break;
                 case For.Room:
-                     for (int i = 0; i < TableBlok.Roomes.Count; i++)
+                    for (int i = 0; i < TableBlok.Roomes.Count; i++)
                     {
                         if (TableBlok.Roomes[i].ID == ID)
                         {
@@ -265,7 +259,7 @@ namespace Business
                     }
                     break;
                 case For.Hostel:
-                     for (int i = 0; i < TableBlok.HostelsN.Count; i++)
+                    for (int i = 0; i < TableBlok.HostelsN.Count; i++)
                     {
                         if (TableBlok.HostelsN[i].ID == ID)
                         {
@@ -278,7 +272,7 @@ namespace Business
         }
 
         public static int GetGroupeIDByGroupeName(Dek TB, string GroupeName)
-        {            
+        {
             foreach (var item in TB.Groupes)
             {
                 if (item.GroupeNumber == GroupeName) return item.ID;
@@ -333,56 +327,80 @@ namespace Business
 
         public static void DataInForStudent(string[] arg)//добавление
         {
-            Dek TB;
-            if (FileEx(FilePath))
-                TB = DataLoadSave.LoadXML(FilePath);
-            else TB = new Dek();
-            StudentsTable StudentBlok = new StudentsTable
-            {
-                GroupeID = arg[1] != "" ? GetGroupeIDByGroupeName(TB,arg[1]) : -1,
-                RoomID = arg[2] != "" ? GetRoomIdByRoomNumber(TB,arg[2]) : -1,
-                ThirdName_1 = arg[3],
-                Name_2 = arg[4],
-                SurnameName_3 = arg[5],
+            Dek TB = DataLoadSave.LoadXML(FilePath);
 
-                TicetNumber = arg[6],
-                FormStudy = arg[7],
-                ContractBudget = arg[8],
-                Description = arg[9],
-                Bin = arg[10] != null ? File.ReadAllBytes(arg[10]) : null
-            };
-            StudentBlok.ID = TB.StudID++;
+            //var student = TB.Students.First(x => x.ID == ID);
+
+            StudentsTable StudentBlok = new StudentsTable
+            (
+                arg[1] != "" ? GetGroupeIDByGroupeName(TB, arg[1]) : -1,
+                arg[2] != "" ? GetRoomIdByRoomNumber(TB, arg[2]) : -1,
+                arg[3],
+                arg[4],
+                arg[5],
+                arg[6],
+                arg[7],
+                arg[8],
+                arg[9],
+                arg[10] != null ? arg[10] : null
+            );
+
+            //StudentBlok.ID = TB.StudID++;
             TB.Students.Add(StudentBlok);
             Save(TB);
-            StudentsInGroupeCount();
-            StudentsInRoomCount();
+            //StudentsInGroupeCount();
+            //StudentsInRoomCount();
         }
 
         public static void DataInForStudent(string[] arg, int ID)//редактирование за айдишником дата грида
         {
-            Dek TB;
-            if (FileEx(FilePath))
-                TB = DataLoadSave.LoadXML(FilePath);
-            else TB = new Dek();
+            Dek TB = DataLoadSave.LoadXML();
             int i = GetTrueItemID(TB, ID, For.Student);
+
             StudentsTable StudentBlok = new StudentsTable
-            {
-                GroupeID = arg[1] != "" ? GetGroupeIDByGroupeName(TB, arg[1]) : -1,
-                RoomID = arg[2] != "" ? GetRoomIdByRoomNumber(TB, arg[2]) : -1,
-                ThirdName_1 = arg[3],
-                Name_2 = arg[4],
-                SurnameName_3 = arg[5],
-                TicetNumber = arg[6],
-                FormStudy = arg[7],
-                ContractBudget = arg[8],
-                Description = arg[9],
-                Bin = arg[10] != null ? File.ReadAllBytes(arg[10]) : TB.Students[i].Bin
-            };
+            (
+                arg[1] != "" ? GetGroupeIDByGroupeName(TB, arg[1]) : -1,
+                arg[2] != "" ? GetRoomIdByRoomNumber(TB, arg[2]) : -1,
+                arg[3],
+                arg[4],
+                arg[5],
+                arg[6],
+                arg[7],
+                arg[8],
+                arg[9],
+                arg[10] != null ? arg[10] : null
+            );
+
             StudentBlok.ID = TB.Students[i].ID;
             TB.Students[i] = StudentBlok;
             Save(TB);
-            StudentsInGroupeCount();
-            StudentsInRoomCount();
+            //Dek TB;
+            //if (FileEx(FilePath))
+            //    TB = DataLoadSave.LoadXML(FilePath);
+            //else TB = new Dek();
+
+
+            //int i = GetTrueItemID(TB, ID, For.Student);
+
+
+            //StudentsTable StudentBlok = new StudentsTable
+            //{
+            //    GroupeID = arg[1] != "" ? GetGroupeIDByGroupeName(TB, arg[1]) : -1,
+            //    RoomID = arg[2] != "" ? GetRoomIdByRoomNumber(TB, arg[2]) : -1,
+            //    ThirdName_1 = arg[3],
+            //    Name_2 = arg[4],
+            //    SurnameName_3 = arg[5],
+            //    TicetNumber = arg[6],
+            //    FormStudy = arg[7],
+            //    ContractBudget = arg[8],
+            //    Description = arg[9],
+            //    Bin = arg[10] != null ? File.ReadAllBytes(arg[10]) : TB.Students[i].Bin
+            //};
+            //StudentBlok.ID = TB.Students[i].ID;
+            //TB.Students[i] = StudentBlok;
+            //Save(TB);
+            //StudentsInGroupeCount();
+            //StudentsInRoomCount();
         }
 
         public static bool DataDeleteStudent(int ID)
@@ -391,36 +409,35 @@ namespace Business
             if (FileEx(FilePath))
             {
                 TB = DataLoadSave.LoadXML(FilePath);
-                TB.Students.RemoveAt(GetTrueItemID(TB,ID,For.Student));
+                TB.Students.RemoveAt(GetTrueItemID(TB, ID, For.Student));
                 //TB.Students.RemoveAt(ID);
                 DataLoadSave.SaveXML(FilePath, TB);
-                StudentsInGroupeCount();
-                StudentsInRoomCount();
                 return true;
             }
             else return false;
         }//удаление за айдишником дата грида(уже нет)
         //удаление за полем айди в елементе
 
-        public static void StudentsInGroupeCount()//инициализировать при добавлении каждого студента и редактировании
-        {
-            Dek TB = DataLoadSave.LoadXML(FilePath);
-            foreach (var item in TB.Groupes)
-            {
-                item.StudentsInGroupe = 0;
-            }
-            foreach (var Gitem in TB.Groupes)
-            {
-                foreach (var Sitem in TB.Students)
-                {
-                    if (Gitem.ID == Sitem.GroupeID)
-                    {
-                        Gitem.StudentsInGroupe++;
-                    }
-                }                
-            }
-            DataLoadSave.SaveXML(FilePath, TB);
-        }
+        //public static void StudentsInGroupeCount()//инициализировать при добавлении каждого студента и редактировании
+        //{
+        //    Dek TB = DataLoadSave.LoadXML(FilePath);
+        //    foreach (var item in TB.Groupes)
+        //    {
+        //        item.StudentsInGroupe = 0;
+        //    }
+
+        //    foreach (var Gitem in TB.Groupes)
+        //    {
+        //        foreach (var Sitem in TB.Students)
+        //        {
+        //            if (Gitem.ID == Sitem.GroupeID)
+        //            {
+        //                Gitem.StudentsInGroupe++;
+        //            }
+        //        }
+        //    }
+        //    DataLoadSave.SaveXML(FilePath, TB);
+        //}
 
         public static void DataInForGroupes(string[] arg)
         {
@@ -428,13 +445,7 @@ namespace Business
             if (FileEx(FilePath))
                 TB = DataLoadSave.LoadXML(FilePath);
             else TB = new Dek();
-            GroupeTable GroupeBlok = new GroupeTable
-            {
-                GroupeNumber = arg[1],
-                StudentsInGroupe = 0,
-                Description = arg[3]
-            };
-            GroupeBlok.ID = TB.GroupID++;
+            GroupeTable GroupeBlok = new GroupeTable(arg[1], arg[3]);
             TB.Groupes.Add(GroupeBlok);
             Save(TB);
         }
@@ -446,12 +457,7 @@ namespace Business
                 TB = DataLoadSave.LoadXML(FilePath);
             else TB = new Dek();
             int i = GetTrueItemID(TB, ID, For.Groupe);
-            GroupeTable GroupeBlok = new GroupeTable
-            {
-                GroupeNumber = arg[1],
-                StudentsInGroupe = TB.Groupes[i].StudentsInGroupe,
-                Description = arg[3]
-            };
+            GroupeTable GroupeBlok = new GroupeTable(arg[1],arg[3]);
             GroupeBlok.ID = TB.Students[i].ID;
             TB.Groupes[i] = GroupeBlok;
             Save(TB);
@@ -464,7 +470,6 @@ namespace Business
             {
                 TB = DataLoadSave.LoadXML(FilePath);
                 int i = GetTrueItemID(TB, ID, For.Groupe);
-                StudentsInGroupeCount();
                 if (TB.Groupes[i].StudentsInGroupe > 0) return false;
                 TB.Groupes.RemoveAt(i);
                 DataLoadSave.SaveXML(FilePath, TB);
@@ -473,100 +478,101 @@ namespace Business
             else return false;
         }
 
-        public static void StudentsInRoomCount()//вызывать при добавлении каждого студента и редактировании
-        {
-            Dek TB = DataLoadSave.LoadXML(FilePath);
-            foreach (var item in TB.Roomes)
-            {
-                item.FreePlase = item.AllPlace;
-            }
-            foreach (var Ritem in TB.Roomes)
-            {
-                foreach (var Sitem in TB.Students)
-                {
-                    if (Ritem.ID == Sitem.RoomID)
-                    {
-                        Ritem.FreePlase--;
-                    }
-                }
-            }
-            DataLoadSave.SaveXML(FilePath, TB);
-        }
+        //public static void StudentsInRoomCount()//вызывать при добавлении каждого студента и редактировании
+        //{
+        //    Dek TB = DataLoadSave.LoadXML(FilePath);
+        //    foreach (var item in TB.Roomes)
+        //    {
+        //        item.FreePlase = item.AllPlace;
+        //    }
+        //    foreach (var Ritem in TB.Roomes)
+        //    {
+        //        foreach (var Sitem in TB.Students)
+        //        {
+        //            if (Ritem.ID == Sitem.RoomID)
+        //            {
+        //                Ritem.FreePlase--;
+        //            }
+        //        }
+        //    }
+        //    DataLoadSave.SaveXML(FilePath, TB);
+        //}
 
         public static void DataInForRoom(string[] arg)
         {
-            Dek TB;
-            if (FileEx(FilePath))
-                TB = DataLoadSave.LoadXML(FilePath);
-            else TB = new Dek();
-            RoomTable RoomBlok = new RoomTable
-            {
-                RoomNumber = arg[2],
-                HostelID = arg[1] != "" ? GetHostelIdByName(TB, arg[1]) : -1,
-                AllPlace = arg[3] != "" ?Convert.ToInt32(arg[3]) : 0,
-                FreePlase = arg[3] != "" ? Convert.ToInt32(arg[3]) : 0,
-                Description = arg[5]
-            };
-            RoomBlok.ID = TB.RoomID++;
-            TB.Roomes.Add(RoomBlok);
-            Save(TB);
-            RoomsInHostelCount();
+            //Dek TB;
+            //if (FileEx(FilePath))
+            //    TB = DataLoadSave.LoadXML(FilePath);
+            //else TB = new Dek();
+            //RoomTable RoomBlok = new RoomTable
+            //{
+            //    RoomNumber = arg[2],
+            //    HostelID = arg[1] != "" ? GetHostelIdByName(TB, arg[1]) : -1,
+            //    AllPlace = arg[3] != "" ? Convert.ToInt32(arg[3]) : 0,
+            //    FreePlase = arg[3] != "" ? Convert.ToInt32(arg[3]) : 0,
+            //    Description = arg[5]
+            //};
+            //RoomBlok.ID = TB.RoomID++;
+            //TB.Roomes.Add(RoomBlok);
+            //Save(TB);
+            //RoomsInHostelCount();
         }
 
         public static void DataInForRoom(string[] arg, int ID)
         {
-            Dek TB;
-            if (FileEx(FilePath))
-                TB = DataLoadSave.LoadXML(FilePath);
-            else TB = new Dek();
-            int i = GetTrueItemID(TB, ID, For.Room);
-            RoomTable RoomBlok = new RoomTable
-            {
-                RoomNumber = arg[2],
-                HostelID = arg[1] != "" ? GetHostelIdByName(TB,arg[1]) : -1,
-                AllPlace = arg[3] != "" ? Convert.ToInt32(arg[3]) : 0,
-                //FreePlase = Convert.ToInt32(arg[3]),
-                Description = arg[5]
-            };
-            RoomBlok.ID = TB.Roomes[i].ID;
-            TB.Roomes[i] = RoomBlok;
-            Save(TB);
-            StudentsInRoomCount();
-            RoomsInHostelCount();
+            //Dek TB;
+            //if (FileEx(FilePath))
+            //    TB = DataLoadSave.LoadXML(FilePath);
+            //else TB = new Dek();
+            //int i = GetTrueItemID(TB, ID, For.Room);
+            //RoomTable RoomBlok = new RoomTable
+            //{
+            //    RoomNumber = arg[2],
+            //    HostelID = arg[1] != "" ? GetHostelIdByName(TB, arg[1]) : -1,
+            //    AllPlace = arg[3] != "" ? Convert.ToInt32(arg[3]) : 0,
+            //    //FreePlase = Convert.ToInt32(arg[3]),
+            //    Description = arg[5]
+            //};
+            //RoomBlok.ID = TB.Roomes[i].ID;
+            //TB.Roomes[i] = RoomBlok;
+            //Save(TB);
+            //StudentsInRoomCount();
+            //RoomsInHostelCount();
         }
 
         public static bool DataDeleteRoom(int ID)
         {
-            Dek TB;
-            if (FileEx(FilePath))
-            {
-                TB = DataLoadSave.LoadXML(FilePath);
-                int i = GetTrueItemID(TB, ID, For.Room);
-                StudentsInRoomCount();
-                if (TB.Roomes[i].FreePlase != TB.Roomes[i].AllPlace) return false;
-                TB.Roomes.RemoveAt(i);
-                DataLoadSave.SaveXML(FilePath, TB);
-                RoomsInHostelCount();
-                return true;
-            }
-            else return false;
+            //Dek TB;
+            //if (FileEx(FilePath))
+            //{
+            //    TB = DataLoadSave.LoadXML(FilePath);
+            //    int i = GetTrueItemID(TB, ID, For.Room);
+            //    StudentsInRoomCount();
+            //    if (TB.Roomes[i].FreePlase != TB.Roomes[i].AllPlace) return false;
+            //    TB.Roomes.RemoveAt(i);
+            //    DataLoadSave.SaveXML(FilePath, TB);
+            //    RoomsInHostelCount();
+            //    return true;
+            //}
+            //else return false;
+            return false;
         }
 
         public static void DataInForHostel(string[] arg)
         {
-            Dek TB;
-            if (FileEx(FilePath))
-                TB = DataLoadSave.LoadXML(FilePath);
-            else TB = new Dek();
-            HostelNewTable HostelBlok = new HostelNewTable
-            {
-                Frame = arg[1],
-                RoomsCount = 0,
-                Decription = arg[3]
-            };
-            HostelBlok.ID = TB.HostID++;
-            TB.HostelsN.Add(HostelBlok);
-            Save(TB);
+            //Dek TB;
+            //if (FileEx(FilePath))
+            //    TB = DataLoadSave.LoadXML(FilePath);
+            //else TB = new Dek();
+            //HostelNewTable HostelBlok = new HostelNewTable
+            //{
+            //    Frame = arg[1],
+            //    RoomsCount = 0,
+            //    Decription = arg[3]
+            //};
+            //HostelBlok.ID = TB.HostID++;
+            //TB.HostelsN.Add(HostelBlok);
+            //Save(TB);
         }
 
         public static void RoomsInHostelCount()//вызывать при добавлении и редакт комнаты
@@ -591,36 +597,37 @@ namespace Business
 
         public static void DataInForHostel(string[] arg, int ID)
         {
-            Dek TB;
-            if (FileEx(FilePath))
-                TB = DataLoadSave.LoadXML(FilePath);
-            else TB = new Dek();
-            int i = GetTrueItemID(TB, ID, For.Hostel);
-            HostelNewTable HostelBlok = new HostelNewTable
-            {
-                Frame = arg[1],
-                Decription = arg[3]
-            };
-            HostelBlok.ID = TB.HostelsN[i].ID;
-            TB.HostelsN[i] = HostelBlok;
-            Save(TB);
-            RoomsInHostelCount();
+            //Dek TB;
+            //if (FileEx(FilePath))
+            //    TB = DataLoadSave.LoadXML(FilePath);
+            //else TB = new Dek();
+            //int i = GetTrueItemID(TB, ID, For.Hostel);
+            //HostelNewTable HostelBlok = new HostelNewTable
+            //{
+            //    Frame = arg[1],
+            //    Decription = arg[3]
+            //};
+            //HostelBlok.ID = TB.HostelsN[i].ID;
+            //TB.HostelsN[i] = HostelBlok;
+            //Save(TB);
+            //RoomsInHostelCount();
         }
 
         public static bool DataDeleteHostel(int ID)
         {
-            Dek TB;
-            if (FileEx(FilePath))
-            {
-                TB = DataLoadSave.LoadXML(FilePath);
-                int i = GetTrueItemID(TB, ID, For.Hostel);
-                RoomsInHostelCount();
-                if (TB.HostelsN[i].RoomsCount > 0) return false;
-                TB.HostelsN.RemoveAt(i);
-                DataLoadSave.SaveXML(FilePath, TB);
-                return true;
-            }
-            else return false;
+            //Dek TB;
+            //if (FileEx(FilePath))
+            //{
+            //    TB = DataLoadSave.LoadXML(FilePath);
+            //    int i = GetTrueItemID(TB, ID, For.Hostel);
+            //    RoomsInHostelCount();
+            //    if (TB.HostelsN[i].RoomsCount > 0) return false;
+            //    TB.HostelsN.RemoveAt(i);
+            //    DataLoadSave.SaveXML(FilePath, TB);
+            //    return true;
+            //}
+            //else return false;
+            return false;
         }
 
         //поисковые запросы
@@ -635,7 +642,7 @@ namespace Business
             return true;
         }
 
-        public static bool GetHostelIDByRoomID(Dek TB,int RoomID, int HostelID)
+        public static bool GetHostelIDByRoomID(Dek TB, int RoomID, int HostelID)
         {
             if (RoomID == -1) return false;
             if (TB.Roomes[GetTrueItemID(TB, RoomID, For.Room)].HostelID == HostelID) return true;
@@ -665,7 +672,7 @@ namespace Business
                     arg[0] = S.ThirdName_1.Contains(name1) || S.ThirdName_1 == "" ? true : false;
                     arg[1] = S.Name_2.Contains(name2) || S.Name_2 == "" ? true : false;
                     arg[2] = S.SurnameName_3.Contains(name3) || S.SurnameName_3 == "" ? true : false;
-                    arg[3] = GetGroupeNameByID(TB,S.GroupeID).Contains(groupe) || GetGroupeNameByID(TB, S.GroupeID)== "" ? true : false;
+                    arg[3] = GetGroupeNameByID(TB, S.GroupeID).Contains(groupe) || GetGroupeNameByID(TB, S.GroupeID) == "" ? true : false;
 
                     if (CompareBoolArg(arg))
                     {

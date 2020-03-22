@@ -26,12 +26,10 @@ namespace DekanatSerializer
                 }
             }
         }
-
         public static void EnableDisableButtons(Button[] MassButtons , bool Enabled)
         {
             foreach (var item in MassButtons) item.Enabled = Enabled;
         }
-
         public static bool Check(Control parent)
         {
             foreach (Control c in parent.Controls)
@@ -46,7 +44,6 @@ namespace DekanatSerializer
             }
             return true;
         }
-
         public static void ClearControls(Control parent)
         {
             foreach (Control c in parent.Controls)
@@ -59,7 +56,6 @@ namespace DekanatSerializer
                 }
             }
         }
-
         public static void ClearFiltres(Control parent)
         {
             foreach (Control c in parent.Controls)
@@ -78,7 +74,6 @@ namespace DekanatSerializer
                 }
             }
         }
-
         public static void SendDataFromHostelTextBox(Control parent)
         {
             int i = 0;
@@ -101,7 +96,6 @@ namespace DekanatSerializer
             }
             BusinessClass.DataInForHostel(mass);
         }
-
         public static void SendDataFromHostelTextBox(Control parent, int RowIndex)
         {
             int i = 0;
@@ -126,7 +120,6 @@ namespace DekanatSerializer
             }
             BusinessClass.DataInForHostel(mass, RowIndex);
         }
-
         public static void SendDataFromRoomTextBox(Control parent)
         {
             int i = 0;
@@ -149,7 +142,6 @@ namespace DekanatSerializer
             }
             BusinessClass.DataInForRoom(mass);
         }
-
         public static void SendDataFromRoomTextBox(Control parent, int RowIndex)
         {
             int i = 0;
@@ -174,7 +166,6 @@ namespace DekanatSerializer
             }
             BusinessClass.DataInForRoom(mass, RowIndex);
         }
-
         public static void SendDataFromGroupeTextBox(Control parent)
         {
             int i = 0;
@@ -197,7 +188,6 @@ namespace DekanatSerializer
             }
             BusinessClass.DataInForGroupes(mass);
         }
-
         public static void SendDataFromGroupeTextBox(Control parent, int RowIndex)
         {
             int i = 0;
@@ -222,7 +212,6 @@ namespace DekanatSerializer
             }
             BusinessClass.DataInForGroupes(mass, RowIndex);
         }
-
         public static void SendDataFromStudentTextBox(Control parent, string filePath)
         {            
             int i = 0;
@@ -250,7 +239,6 @@ namespace DekanatSerializer
             //BusinessClass.DataInForStudent(textBoxGroupe.Text, textBoxRoom.Text, textBoxName1.Text, textBoxName2.Text, textBoxName3.Text, textBoxTicet.Text, textBoxFormStudy.Text, textBoxCB.Text, textBoxDescription.Text, FilePath);
             BusinessClass.DataInForStudent(mass);
         }
-
         public static void SendDataFromStudentTextBox(Control parent, string filePath, int RowIndex)
         {
             int i = 0;
@@ -276,7 +264,6 @@ namespace DekanatSerializer
             mass[mass.Length - 1] = filePath;
             BusinessClass.DataInForStudent(mass, RowIndex);
         }
-
         public static void AddDataToTextBox(Control parent, BusinessClass.For @for, int RowIndex)
         {
             //int i = 0;
@@ -311,29 +298,24 @@ namespace DekanatSerializer
             //parent.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
 
         }
-
         public static void GetSetPicture(PictureBox parent, int RowIndex)
         {
-            MemoryStream ms;
+
             if (BusinessClass.ReturnPicture(RowIndex) != null)
             {
-                ms = BusinessClass.ReturnPicture(RowIndex);
-                Image image = Image.FromStream(ms);
-                parent.Image = image;
+                Bitmap bitmap = new Bitmap(BusinessClass.ReturnPicture(RowIndex));
+                parent.Image = bitmap;
             }
             else parent.Image = null;
         }
-
         public static void GetSetPicture(PictureBox parent)
         {
             parent.Image = null;
         }
-
         public static void ClearBeforeCreate(Panel panel)
         {
             ClearControls(panel);
         }
-
         public static void ClearBeforeCreate(Panel panel, PictureBox pictureBox)
         {
             ClearControls(panel);
@@ -349,8 +331,7 @@ namespace DekanatSerializer
             parent.ClearSelection();
             ClearControls(panel);
             GetSetPicture(pictureBox);
-        }
-        
+        }        
         public static void AddItemsToComboBox(ComboBox parent, BusinessClass.For @for)
         {
             //List<ComboboxItem> Ilist = new List<ComboboxItem>();
